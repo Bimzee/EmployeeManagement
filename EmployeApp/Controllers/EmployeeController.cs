@@ -30,54 +30,26 @@ namespace EmployeApp.Controllers
             int pageIndex = 1;
             pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
 
-            DataTable empDT = _employeeRepository.GetDetails();
 
             ViewBag.CurrentSort = (String.IsNullOrEmpty(sortOrder)?"ASC":CurrentSort);
             sortOrder = String.IsNullOrEmpty(sortOrder) ? "Emp_ID" : sortOrder;
 
             IPagedList<DataRow> empl = null;
 
-            var empList = new List<EmployeeViewModel>();
-
-            List<DataRow> list = null;
+            DataTable empDT = _employeeRepository.GetDetails();
 
             if (!String.IsNullOrEmpty(sortOrder))
             {
                 if (!String.IsNullOrEmpty(CurrentSort) && CurrentSort=="ASC")
                 {
-                    list = empDT.AsEnumerable().ToList();
-                    //empl = new PagedList<DataRow>(list, page ?? pageIndex, pageSize);
-
-                    empl = empDT.AsEnumerable().OrderBy(et => et["EmployeeTypeID"]).ToPagedList(pageIndex,pageSize);
-                     //emp= empDT.AsEnumerable().OrderBy(et => et["EmployeeTypeID"]).CopyToDataTable();
+                    empl = empDT.AsEnumerable().OrderBy(et => et["EmployeeTypeID"].ToString()).ToPagedList(pageIndex,pageSize);
                 }
                 else
                 {
-                    empDT= empDT.AsEnumerable().OrderByDescending(et => et["EmployeeType"].ToString()).CopyToDataTable();
-
                     empl = empDT.AsEnumerable().OrderByDescending(et => et["EmployeeTypeID"]).ToPagedList(pageIndex, pageSize);
-
-                    //Iempl = empDT.AsEnumerable().ToList().ToPagedList(pageIndex,pageSize);
                 }
             }
 
-            foreach (var item in empDT.AsEnumerable())
-            {
-                EmployeeViewModel emp = new EmployeeViewModel();
-
-                emp.Id = Convert.ToInt32(item["Id"]);
-                emp.FirstName = Convert.ToString(item["FirstName"]);
-                emp.LastName = Convert.ToString(item["LastName"]);
-                emp.Age = Convert.ToInt32(item["Age"]);
-                emp.EmpType = Convert.ToString(item["EmployeeType"]);
-                emp.PayScale = Convert.ToInt32(item["PayScale"]);
-                emp.WorkingHours = Convert.ToInt32(item["WorkingHours"]);
-                emp.Total = Convert.ToInt32(item["Total"]);
-
-                empList.Add(emp);
-            }
-
-            //return View(empList);
             return View(empl);
 
 
