@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+}
+
+<script>
+    function clickAlert() {
+        alert(@ViewBag.EmpSalary +" amount will be tranfered!");
+    }
+</script>
+<h2>Transfer Money</h2>
+
+<div class="form-group">
+   Employee : @ViewBag.EmployeeName
+</div>
+<div class="form-group">
+    Salary : @ViewBag.EmpSalary
+</div>
+<div class="form-group">
+@Html.DisplayName("Account Number")
+    <br />
+    <div class="col-md-10">
+        @Html.Editor("Account Number", new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+</div>
+<br/>
+<input type="submit" onclick="clickAlert()" value="Transfer" />
+

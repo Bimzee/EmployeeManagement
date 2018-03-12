@@ -1,0 +1,95 @@
+﻿@*@model IEnumerable<EmployeApp.Models.EmployeeViewModel>*@
+@*@model PagedList.IPagedList<EmployeApp.Models.EmployeeViewModel>*@
+@using System.Data
+
+@using PagedList.Mvc;
+
+@model PagedList.IPagedList<DataRow>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("First Name")
+        </th>
+        <th>
+            @Html.DisplayName("Last name")
+        </th>
+        <th>
+            @Html.DisplayName("Age")
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.EmpType)*@
+            @Html.ActionLink("Employee Type", "Index",
+                new { sortOrder = "EmpType", CurrentSort = (ViewBag.CurrentSort == "ASC" ? "DSC" : "ASC") })
+
+        </th>
+        <th>
+            @Html.DisplayName("Working Hours")
+        </th>
+        <th>
+            @Html.DisplayName("Pay Scale")
+        </th>
+        <th>
+            @Html.DisplayName("Total")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item["FirstName"])
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item["LastName"])
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item["Age"])
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item["EmployeeType"])
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item["WorkingHours"])
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item["PayScale"])
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item["Total"])
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item["Id"] })
+            </td>
+            @if (Convert.ToInt32(item["EmployeeTypeID"]) == 1)
+            {
+                <td>
+                    @Html.ActionLink("Transfer Money", "Details", new { id = item["id"] })
+                </td>
+            }
+            @*<td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                </td>*@
+        </tr>
+    }
+
+</table>
+<br />
+<div id='Paging' style="text-align: center">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>
