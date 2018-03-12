@@ -5,7 +5,26 @@
 
 <script>
     function clickAlert() {
-        alert(@ViewBag.EmpSalary +" amount will be tranfered!");
+        if (checkAccountNum) {
+
+            var salary = "@ViewBag.EmpSalary";
+
+            if (!salary) {
+                salary = 0;
+            }
+            alert(salary + " amount will be tranfered!");
+        }
+    }
+    function checkAccountNum() {
+        var accntNum = document.getElementsByName("Account Number").length;
+        if (accntNum <= 0)
+        {
+            alert('Please enter Account Number');
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 </script>
 <h2>Transfer Money</h2>
