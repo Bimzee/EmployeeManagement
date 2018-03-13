@@ -5,7 +5,7 @@
 
 <script>
     function clickAlert() {
-        if (checkAccountNum) {
+        if (checkAccountNum()) {
 
             var salary = "@ViewBag.EmpSalary";
 
@@ -16,10 +16,10 @@
         }
     }
     function checkAccountNum() {
-        var accntNum = document.getElementsByName("Account Number").length;
-        if (accntNum <= 0)
-        {
-            alert('Please enter Account Number');
+        debugger;
+        var textVal = document.getElementById("AcntNum").value;
+        if (!textVal.match(/\S/)) {
+            alert("Please enter Account Number");
             return false;
         }
         else {
@@ -39,9 +39,9 @@
 @Html.DisplayName("Account Number")
     <br />
     <div class="col-md-10">
-        @Html.Editor("Account Number", new { htmlAttributes = new { @class = "form-control" } })
+        @Html.Editor("Account Number", new { htmlAttributes = new { @class = "form-control", @id="AcntNum"} })
     </div>
 </div>
 <br/>
-<input type="submit" onclick="clickAlert()" value="Transfer" />
+<input type="submit" onclick="clickAlert()" onblur="checkAccountNum()" value="Transfer" />
 
